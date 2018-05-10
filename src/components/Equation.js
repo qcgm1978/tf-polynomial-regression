@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderToString } from 'react-dom/server'
+// import { renderToString } from 'react-dom/server'
 import styled from 'styled-components';
 
 const sanitizeValue = v => Math.abs(v.toFixed(3));
@@ -15,7 +15,7 @@ const Equation = ({ className, a, b, c, d }) => {
     <span>{`${d >= 0 ? ' + ' : ' - '}`}</span>
     <span>{`${sanitizeValue(d)}`}</span>
   </div>;
-  console.assert(renderToString(ret) === '')
+
   return ret;
 };
 
