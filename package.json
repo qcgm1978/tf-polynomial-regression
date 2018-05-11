@@ -10,14 +10,31 @@
     "react-dom": "^16.3.2",
     "react-scripts": "1.1.4",
     "styled-components": "^3.2.6",
+    "ts-jest": "^22.4.5",
+    "typescript": "^2.8.3",
     "vega-embed": "^3.9.0",
     "vega-lite": "^2.4.1"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "src/components/.*.spec.ts",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "deploy": "npm run build&&gh-pages -d build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "node --inspect=7000 ./node_modules/jest/bin/jest.js --runInBand  --watch",
+    "test-bak": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

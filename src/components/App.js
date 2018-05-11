@@ -9,10 +9,10 @@ import DataPlot from './DataPlot';
 import LearningRateSelector from './LearningRateSelector';
 import { generateData } from '../tensorflow/data';
 
-const trueCoefficients = {a: -.8, b: -.2, c: .9, d: .5};
+const trueCoefficients = { a: -.8, b: -.2, c: .9, d: .5 };
 
 class App extends Component {
-  static resetState (learningRate = 0.5) {
+  static resetState(learningRate = 0.5) {
     const { trainXs, trainYs, testXs, testYs } = generateData(trueCoefficients);
     return {
       a: tf.variable(tf.scalar(Math.random())),
@@ -31,22 +31,22 @@ class App extends Component {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
     this.state = App.resetState();
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.optimizer = tf.train.sgd(this.state.learningRate);
     this.singleStepTrain();
   }
 
-  loss (prediction, labels) {
+  loss(prediction, labels) {
     // Having a good error function is key for training a machine learning model
     return prediction.sub(labels).square().mean();
   }
 
-  predict (xs, a, b, c, d) {
+  predict(xs, a, b, c, d) {
     // y = a * x ^ 3 + b * x ^ 2 + c * x + d
     return tf.tidy(() => {
       return a.mul(xs.pow(tf.scalar(3, 'int32')))
@@ -56,7 +56,7 @@ class App extends Component {
     });
   }
 
-  async continuousTrain (xs, ys) {
+  async continuousTrain(xs, ys) {
     while (this.state.isTraining) {
       this.train(xs, ys);
       // Use tf.nextFrame to not block the browser.
@@ -64,13 +64,14 @@ class App extends Component {
     }
   }
 
-  singleStepTrain () {
+  singleStepTrain() {
     const { xs, ys } = this.state.trainingData;
     this.train(xs, ys);
   }
 
-  train (xs, ys) {
+  train(xs, ys) {
     this.optimizer.minimize(() => {
+      debugger;
       const predictions = this.predict(xs, this.state.a, this.state.b, this.state.c, this.state.d);
       const predictionsValue = predictions.dataSync();
       const trainingError = this.loss(predictions, ys);
@@ -78,14 +79,14 @@ class App extends Component {
       this.setState(({ iteration, trainingError }) => ({ trainingError: trainingError.concat(trainingErrorValue), iteration: iteration + 1, predictions: predictionsValue }));
       return trainingError;
     });
-    
+
     const { testData } = this.state;
     const testPredictions = this.predict(testData.xs, this.state.a, this.state.b, this.state.c, this.state.d);
     const testErrorValue = this.loss(testPredictions, testData.ys).dataSync()[0];
     this.setState(({ testError }) => ({ testError: testError.concat(testErrorValue) }));
   }
 
-  playToggle () {
+  playToggle() {
     const isTraining = !this.state.isTraining;
     this.setState(() => ({ isTraining }), () => {
       if (this.state.isTraining) {
@@ -95,15 +96,15 @@ class App extends Component {
     });
   }
 
-  reset (learningRate = this.state.learningRate) {
+  reset(learningRate = this.state.learningRate) {
     this.setState(() => App.resetState(learningRate), () => this.singleStepTrain());
   }
 
-  render () {
+  render() {
     const { a, b, c, d, isTraining, learningRate, showTestData, ...otherState } = this.state;
     return (
       <MuiThemeProvider>
-        <Paper style={{height: '90vh'}} zDepth={2}>
+        <Paper style={{ height: '90vh' }} zDepth={2}>
           <Toolbar>
             <ToolbarGroup>
               <LearningRateSelector learningRate={learningRate} onChange={(e, i, value) => this.reset(value)} />
