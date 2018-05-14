@@ -22,5 +22,7 @@ Executes the provided function f and after it is executed, cleans up all interme
         });
 
         expect(tf.memory().numTensors).toBe(5);
-        y.print();
+        const trueCoefficients = { a: -.8, b: -.2, c: .9, d: .5 };
+        const { trainXs, trainYs, testXs, testYs } = generateData(trueCoefficients);
+        expect(trainXs.constructor.name).toBe('Tensor')
     });
