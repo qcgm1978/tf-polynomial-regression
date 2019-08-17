@@ -9,21 +9,21 @@
   <body>
     <script src="node_modules/_@tensorflow_tfjs@0.10.3@@tensorflow/tfjs/dist/tf.js"></script>
     <script>
-      const ClassFoo = class {
-        constructor(arr) {
-          this.data = arr;
-        }
-        print() {
-          console.log(
-            this.constructor.name + "\n   " + JSON.stringify(this.data)
-          );
-        }
-      };
-      const foo = new ClassFoo([1, 2, 3]);
+    //   const ClassFoo = class {
+    //     constructor(arr) {
+    //       this.data = arr;
+    //     }
+    //     print() {
+    //       console.log(
+    //         this.constructor.name + "\n   " + JSON.stringify(this.data)
+    //       );
+    //     }
+    //   };
+    //   const foo = new ClassFoo([1, 2, 3]);
       //   console.log(foo);
-      foo.print();
-      tf.tensor1d([1, 2, 3]).print();
-      console.log(tf.tensor1d([1, 2, 3]));
+      //   foo.print();
+      //   tf.tensor1d([1, 2, 3]).print();
+      //   console.log(tf.tensor1d([1, 2, 3]));
       // Fit a quadratic function by learning the coefficients a, b, c.
       const xs = tf.tensor1d([0, 1, 2, 3]);
       const ys = tf.tensor1d([1.1, 5.9, 16.8, 33.9]);
@@ -53,10 +53,14 @@
       }
 
       // Make predictions.
-      console.log(`a: ${a.dataSync()}, b: ${b.dataSync()}, c: ${c.dataSync()}`);
+      document.body.append(
+        `a: ${a.dataSync()}, b: ${b.dataSync()}, c: ${c.dataSync()}`
+      );
       const preds = f(xs).dataSync();
       preds.forEach((pred, i) => {
-        console.log(`x: ${i}, pred: ${pred}`);
+        var p = document.createElement("p");
+        document.body.appendChild(p).append(`x: ${i}, pred: ${pred}`);
+        // document.body.append(`x: ${i}, pred: ${pred}`);
       });
     </script>
   </body>
